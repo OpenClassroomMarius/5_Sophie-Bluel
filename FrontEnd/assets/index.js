@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const filterProjects = document.getElementById('filter-projects');
     const gallery = document.getElementById('gallery');
-    const modal = document.getElementById('login-modal');
+    // const modal = document.getElementById('login-modal');
     const closeButton = document.querySelector('.close-button');
     let worksData = [];
 
@@ -77,10 +77,10 @@ document.addEventListener('DOMContentLoaded', function () {
         modal.style.display = 'none';
     }
 
-    document.getElementById('login-link').addEventListener('click', function (event) {
-        event.preventDefault();
-        showModal();
-    });
+    // document.getElementById('login-link').addEventListener('click', function (event) {
+    //     event.preventDefault();
+    //     showModal();
+    // });
 
     closeButton.addEventListener('click', function () {
         closeModal();

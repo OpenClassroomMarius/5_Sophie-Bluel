@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
     const filterProjects = document.getElementById('filter-projects');
     const gallery = document.getElementById('gallery');
+    const modal = document.getElementById('login-modal');
+    const closeButton = document.querySelector('.close-button');
     let worksData = [];
 
     // Function to create filter HTML
@@ -66,6 +68,29 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         gallery.innerHTML = createGalleryHtml(filteredWorks);
     }
+
+    function showModal() {
+        modal.style.display = 'block';
+    }
+
+    function closeModal() {
+        modal.style.display = 'none';
+    }
+
+    document.getElementById('login-link').addEventListener('click', function (event) {
+        event.preventDefault();
+        showModal();
+    });
+
+    closeButton.addEventListener('click', function () {
+        closeModal();
+    });
+
+    window.addEventListener('click', function (event) {
+        if (event.target == modal) {
+            closeModal();
+        }
+    });
 
     fetchAndDisplayCategories();
     fetchAndStoreWorks();

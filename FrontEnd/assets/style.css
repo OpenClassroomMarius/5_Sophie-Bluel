@@ -188,6 +188,14 @@ footer nav ul {
 
 /* my css */
 
+html{
+	scroll-behavior: smooth;
+}
+
+a{
+	text-decoration: none;
+	color: black;
+}
 
 nav li {
 	cursor: pointer;

@@ -1,55 +1,72 @@
 document.addEventListener('DOMContentLoaded', function () {
-	const filterProjects = document.getElementById('filter-projects');
-	const gallery = document.getElementById('gallery');
+    const filterProjects = document.getElementById('filter-projects');
+    const gallery = document.getElementById('gallery');
+    let worksData = [];
 
-	// Function to create filter HTML
-	const createFilterHtml = (categories) => {
-		let filterHtml = '<div class="afilter afilterselected"><p class="filtertxt">Tous</p></div>';
-		categories.forEach(category => {
-			filterHtml += `<div class="afilter" data-category-id="${category.id}"><p class="filtertxt">${category.name}</p></div>`;
-		});
-		return filterHtml;
-	};
+    // Function to create filter HTML
+    function createFilterHtml(categories) {
+        let filterHtml = '<div class="afilter afilterselected" data-category-id="all"><p class="filtertxt">Tous</p></div>';
+        categories.forEach(function (category) {
+            filterHtml += `<div class="afilter" data-category-id="${category.id}"><p class="filtertxt">${category.name}</p></div>`;
+        });
+        return filterHtml;
+    }
 
-	// Function to create gallery HTML
-	const createGalleryHtml = (works) => {
-		return works.map(work => `
-			<figure>
-				<img src="${work.imageUrl}" alt="${work.title}">
-				<figcaption>${work.title}</figcaption>
-			</figure>
-		`).join('');
-	};
+    // Function to create gallery HTML
+    function createGalleryHtml(works) {
+        let galleryHtml = '';
+        works.forEach(function (work) {
+            galleryHtml += `
+                <figure>
+                    <img src="${work.imageUrl}" alt="${work.title}">
+                    <figcaption>${work.title}</figcaption>
+                </figure>
+            `;
+        });
+        return galleryHtml;
+    }
 
-	// Fetch categories and update filter section
-	fetch('http://localhost:5678/api/categories')
-		.then(response => response.json())
-		.then(categories => {
-            console.log(categories);
-			filterProjects.innerHTML = createFilterHtml(categories);
-			// Add event listeners for filtering
-			document.querySelectorAll('.afilter').forEach(filter => {
-				filter.addEventListener('click', function () {
-					const categoryId = this.getAttribute('data-category-id');
-					filterProjects.querySelectorAll('.afilter').forEach(f => f.classList.remove('afilterselected'));
-					this.classList.add('afilterselected');
-					updateGallery(categoryId);
-				});
-			});
-		});
+    // Function to add event listeners to filters
+    function addFilterEventListeners() {
+        document.querySelectorAll('.afilter').forEach(function (filter) {
+            filter.addEventListener('click', function () {
+                const categoryId = this.getAttribute('data-category-id');
+                filterProjects.querySelectorAll('.afilter').forEach(function (f) { f.classList.remove('afilterselected'); });
+                this.classList.add('afilterselected');
+                updateGallery(categoryId);
+            });
+        });
+    }
 
-	// Fetch works and update gallery section
-	const updateGallery = (categoryId) => {
-		fetch('http://localhost:5678/api/works')
-			.then(response => response.json())
-			.then(works => {
-				if (categoryId) {
-					works = works.filter(work => work.categoryId == categoryId);
-				}
-				gallery.innerHTML = createGalleryHtml(works);
-			});
-	};
+    function fetchAndDisplayCategories() {
+        fetch('http://localhost:5678/api/categories')
+            .then(function (response) { return response.json(); })
+            .then(function (categories) {
+                console.log(categories);
+                filterProjects.innerHTML = createFilterHtml(categories);
+                addFilterEventListeners();  // Add event listeners for filtering
+            });
+    }
 
-	// Initial gallery load with all works
-	updateGallery();
+    function fetchAndStoreWorks() {
+        fetch('http://localhost:5678/api/works')
+            .then(function (response) { return response.json(); })
+            .then(function (works) {
+                worksData = works;
+                updateGallery();  // Display all works initially
+            });
+    }
+
+    function updateGallery(categoryId) {
+        let filteredWorks;
+        if (categoryId && categoryId !== 'all') {
+            filteredWorks = worksData.filter(function (work) { return work.categoryId == categoryId; });
+        } else {
+            filteredWorks = worksData;
+        }
+        gallery.innerHTML = createGalleryHtml(filteredWorks);
+    }
+
+    fetchAndDisplayCategories();
+    fetchAndStoreWorks();
 });

@@ -186,3 +186,49 @@ footer nav ul {
 	margin: 2em
 }
 
+/* my css */
+
+
+nav li {
+	cursor: pointer;
+}
+
+html{
+	background-color: #FFFEF8;
+}
+
+figcaption{
+	margin-top: 10px;
+}
+
+
+.button-send {
+	width: 179px !important;/* edited */
+	height: 36px !important; /* edited */
+	cursor: pointer !important; /* edited */
+}
+
+.filter-projects{
+	display: flex;
+	justify-content: center;
+	margin: 51px 0;
+}
+.afilter{
+	border: 1px solid #1D6154;
+	border-radius: 60px;
+	margin: 0 10px;
+	height: 37px;
+	display: flex;
+	padding-left: 20px;
+	padding-right: 20px;
+	cursor: pointer;
+}
+.filtertxt{
+	margin: auto;
+	font-weight: 700;
+	font-family: 'Syne';
+}
+.afilterselected{
+	background-color: #1D6154;
+	color: white;
+}

@@ -1,0 +1,13 @@
+.login-section{
+    height: calc(100vh - 143px - 73px);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.login-section h1{
+    text-align: center;
+    padding-top: 150px;
+    margin-bottom: 7px;
+}
+.login-section .button-send{
+    border: 0;
+}

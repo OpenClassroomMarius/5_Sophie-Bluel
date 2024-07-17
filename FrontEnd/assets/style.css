@@ -139,7 +139,7 @@ li:hover {
 }
 #contact {
 	width: 50%;
-margin: auto;
+	margin: auto;
 }
 #contact > * {
 	text-align: center;
@@ -183,7 +183,7 @@ input[type="submit"]{
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
-	margin: 2em
+	padding: 2em;
 }
 
 /* my css */
@@ -239,4 +239,7 @@ figcaption{
 .afilterselected{
 	background-color: #1D6154;
 	color: white;
+}
+footer{
+	background-color: white;
 }

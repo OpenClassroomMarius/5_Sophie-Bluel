@@ -274,11 +274,11 @@ footer{
 	justify-content: center;
 	cursor: pointer;
 }
+.edit-icon{
+	margin-left: 31px;
+}
 .modify-txt{
 	margin-left: 11px;
-}
-.project-h-text{
-	margin-right: 31px;
 }
 .login-appears {
     display: flex; /* Display when class is added */

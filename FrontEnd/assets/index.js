@@ -66,16 +66,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function fetchAndStoreWorks() {
         fetch('http://localhost:5678/api/works')
-            .then(function (response) { 
+            .then(function (response) {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                return response.json(); 
+                return response.json();
             })
             .then(function (works) {
                 if (Array.isArray(works) && works.length > 0) {
                     worksData = works;
-                    updateGallery();  // Display all works initially
+                    updateGallery();
                 } else {
                     console.error('Works data is invalid:', works);
                 }
@@ -157,21 +157,21 @@ document.addEventListener('DOMContentLoaded', function () {
         if (document.cookie.includes('token')) {
             const loggedInElements = document.getElementsByClassName('login-appears');
             const loggedOutElements = document.getElementsByClassName('logout-appears');
-            loggedInElements.forEach(function (element) {
-                element.style.display = 'block';
-            });
-            loggedOutElements.forEach(function (element) {
-                element.style.display = 'none';
-            });
+            for (let i = 0; i < loggedOutElements.length; i++) {
+                loggedOutElements[i].style.display = 'none';
+            }
+            for (let i = 0; i < loggedInElements.length; i++) {
+                loggedInElements[i].style.display = 'block';
+            };
         } else {
             const loggedOutElements = document.getElementsByClassName('logout-appears');
-            loggedOutElements.forEach(function (element) {
-                element.style.display = 'block';
-            });
             const loggedInElements = document.getElementsByClassName('login-appears');
-            loggedInElements.forEach(function (element) {
-                element.style.display = 'none';
-            });
+            for (let i = 0; i < loggedOutElements.length; i++) {
+                loggedOutElements[i].style.display = 'block';
+            }
+            for (let i = 0; i < loggedInElements.length; i++) {
+                loggedInElements[i].style.display = 'none';
+            }
             const headerTopElements = document.getElementsByClassName('header-top');
             if (headerTopElements.length > 0) {
                 headerTopElements[0].style.marginTop = '50px';

@@ -1,8 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
     const filterProjects = document.getElementById('filter-projects');
     const gallery = document.getElementById('gallery');
-    // const modal = document.getElementById('login-modal');
+    const modal = document.getElementById('login-modal');
+    const listLogout = document.getElementById('logout-list');
+    const modifyOpenModal = document.getElementById('modify-open-modal');
     const closeButton = document.querySelector('.close-button');
+
     let worksData = [];
 
     // Function to create filter HTML
@@ -42,24 +45,51 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function fetchAndDisplayCategories() {
         fetch('http://localhost:5678/api/categories')
-            .then(function (response) { return response.json(); })
+            .then(function (response) { 
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json(); 
+            })
             .then(function (categories) {
-                console.log(categories);
-                filterProjects.innerHTML = createFilterHtml(categories);
-                addFilterEventListeners();  // Add event listeners for filtering
+                if (Array.isArray(categories) && categories.length > 0) {
+                    filterProjects.innerHTML = createFilterHtml(categories);
+                    addFilterEventListeners();  // Add event listeners for filtering
+                } else {
+                    console.error('Categories data is invalid:', categories);
+                }
+            })
+            .catch(function (error) {
+                console.error('Fetch error:', error);
             });
     }
 
     function fetchAndStoreWorks() {
         fetch('http://localhost:5678/api/works')
-            .then(function (response) { return response.json(); })
+            .then(function (response) { 
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json(); 
+            })
             .then(function (works) {
-                worksData = works;
-                updateGallery();  // Display all works initially
+                if (Array.isArray(works) && works.length > 0) {
+                    worksData = works;
+                    updateGallery();  // Display all works initially
+                } else {
+                    console.error('Works data is invalid:', works);
+                }
+            })
+            .catch(function (error) {
+                console.error('Fetch error:', error);
             });
     }
 
     function updateGallery(categoryId) {
+        if (!Array.isArray(worksData) || worksData.length === 0) {
+            console.error('No works data available');
+            return;
+        }
         let filteredWorks;
         if (categoryId && categoryId !== 'all') {
             filteredWorks = worksData.filter(function (work) { return work.categoryId == categoryId; });
@@ -70,21 +100,45 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function showModal() {
-        modal.style.display = 'block';
+        if (modal) {
+            modal.style.display = 'block';
+        } else {
+            console.error('Modal element not found');
+        }
     }
 
     function closeModal() {
-        modal.style.display = 'none';
+        if (modal) {
+            modal.style.display = 'none';
+        } else {
+            console.error('Modal element not found');
+        }
     }
 
-    // document.getElementById('login-link').addEventListener('click', function (event) {
-    //     event.preventDefault();
-    //     showModal();
-    // });
+    if (closeButton) {
+        closeButton.addEventListener('click', function () {
+            closeModal();
+        });
+    } else {
+        console.error('Close button not found');
+    }
 
-    closeButton.addEventListener('click', function () {
-        closeModal();
-    });
+    if (listLogout) {
+        listLogout.addEventListener('click', function () {
+            document.cookie = "token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
+            window.location.reload();
+        });
+    } else {
+        console.error('Logout list element not found');
+    }
+
+    if (modifyOpenModal) {
+        modifyOpenModal.addEventListener('click', function () {
+            showModal();
+        });
+    } else {
+        console.error('Modify open modal element not found');
+    }
 
     window.addEventListener('click', function (event) {
         if (event.target == modal) {
@@ -92,6 +146,38 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    fetchAndDisplayCategories();
-    fetchAndStoreWorks();
+    if (filterProjects && gallery) {
+        fetchAndDisplayCategories();
+        fetchAndStoreWorks();
+    } else {
+        console.error('Essential elements not found');
+    }
+
+    function checkToken() {
+        if (document.cookie.includes('token')) {
+            const loggedInElements = document.getElementsByClassName('login-appears');
+            const loggedOutElements = document.getElementsByClassName('logout-appears');
+            loggedInElements.forEach(function (element) {
+                element.style.display = 'block';
+            });
+            loggedOutElements.forEach(function (element) {
+                element.style.display = 'none';
+            });
+        } else {
+            const loggedOutElements = document.getElementsByClassName('logout-appears');
+            loggedOutElements.forEach(function (element) {
+                element.style.display = 'block';
+            });
+            const loggedInElements = document.getElementsByClassName('login-appears');
+            loggedInElements.forEach(function (element) {
+                element.style.display = 'none';
+            });
+            const headerTopElements = document.getElementsByClassName('header-top');
+            if (headerTopElements.length > 0) {
+                headerTopElements[0].style.marginTop = '50px';
+            }
+        }
+    }
+
+    checkToken();
 });

@@ -14,15 +14,22 @@
     background-color: #fefefe;
     margin: 15% auto;
     padding: 20px;
-    width: 80%;
-    max-width: 500px;
+    width: 420px;
+    height: 648px;
+    padding-left: 105px;
+    padding-right: 105px;
     border-radius: 10px;
+    position: relative;
 }
 .close-button {
     color: #aaa;
-    float: right;
     font-size: 28px;
     font-weight: bold;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-right: 30px;
+    margin-top: 30px;
 }
 .close-button:hover,
 .close-button:focus {
@@ -36,12 +43,13 @@
     font-family: 'Work Sans', sans-serif;
     font-weight: 400;
     color: black;
+    margin-top: 40px;
 }
 .modal-button-container{
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 38px;
 }
 .modal-button{
     width: 237px;
@@ -52,4 +60,45 @@
     border: none;
     font-family: 'Syne', sans-serif;
     font-size: 14px;
+}
+.modal-separator{
+	width: 100%;
+	border: 1px solid #B3B3B3;
+    margin-top: 38px;
+}
+.gallery-modal{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 46px;
+    gap: 7px;
+    width: 100%;
+    height: auto;
+}
+.modal-gallery-image{
+    height: 100px;
+    width: 77px;
+}
+.modal-contain-image{
+    position: relative;
+    width: auto;
+    margin-bottom: 29px;
+}
+.trashContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 6px;
+    margin-right: 6px;
+    height: 17px;
+    width: 17px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-radius: 2px;
+    background-color: black;
+    cursor: pointer;
+}
+.trash-color{
+    color: white;
 }

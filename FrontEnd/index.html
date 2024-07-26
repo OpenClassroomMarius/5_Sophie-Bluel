@@ -13,8 +13,10 @@
 	<link rel="stylesheet" href="./assets/modal.css">
 </head>
 <body>
-    <div class="header-banner login-appears">
-        <p class="header-banner-title">Mode édition</p>
+    <div class="login-appears">
+        <div class="header-banner">
+            <p class="header-banner-title">Mode édition</p>
+        </div>
     </div>
     <header class="header-top">
         <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
@@ -43,16 +45,18 @@
         <section id="portfolio">
             <div class="project-div">
                 <h2 class="project-h-text">Mes Projets</h2>
-                <div class="modify-projects login-appears" id="modify-open-modal">
-                    <i class="fa-regular fa-pen-to-square edit-icon"></i>
-                    <p class="modify-txt">modifier</p>
+                <div class="login-appears" id="modify-open-modal">
+                    <div class="modify-projects">
+                        <i class="fa-regular fa-pen-to-square edit-icon"></i>
+                        <p class="modify-txt">modifier</p>
+                    </div>
                 </div>
             </div>
             <div class="filter-projects logout-appears" id="filter-projects">
-                <!-- Filters will be populated by JavaScript -->
+                <!-- Filters will appears here -->
             </div>
             <div class="gallery" id="gallery">
-                <!-- Gallery items will be populated by JavaScript -->
+                <!-- Gallery pictures will appears here -->
             </div>
         </section>
         <section id="contact">
@@ -83,6 +87,10 @@
         <div class="modal-content">
             <span class="close-button">&times;</span>
             <h2 class="modal-title">Galerie photo</h2>
+            <div class="gallery-modal" id="gallery-modal">
+                <!-- Gallery pictures will appears here -->
+            </div>
+            <div class="modal-separator"></div>
             <div class="modal-button-container">
                 <button class="modal-button">Ajouter une photo</button>
             </div>

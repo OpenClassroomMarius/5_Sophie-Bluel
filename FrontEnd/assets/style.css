@@ -249,7 +249,7 @@ footer{
 .header-banner {
     width: 100vw;
     height: 59px;
-    display: none; /* Hide by default */
+    display: flex; /* Hide by default */
     background-color: #000000;
     color: white;
     position: absolute;

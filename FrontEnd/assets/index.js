@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const filterProjects = document.getElementById('filter-projects');
     const gallery = document.getElementById('gallery');
+    const galleryModal = document.getElementById('gallery-modal');
     const modal = document.getElementById('login-modal');
     const listLogout = document.getElementById('logout-list');
     const modifyOpenModal = document.getElementById('modify-open-modal');
@@ -31,6 +32,21 @@ document.addEventListener('DOMContentLoaded', function () {
         return galleryHtml;
     }
 
+    function createGalleryModal(works) {
+        let galleryModal = '';
+        works.forEach(function (work) {
+            galleryModal += `
+                <div class="modal-contain-image">
+                    <img src="${work.imageUrl}" alt="${work.title}" class="modal-gallery-image">
+                    <div class="trashContainer">
+                        <i class="fa-solid fa-trash-can trash-color"></i>
+                    </div>
+                </div>
+            `;
+        });
+        return galleryModal;
+    }
+
     // Function to add event listeners to filters
     function addFilterEventListeners() {
         document.querySelectorAll('.afilter').forEach(function (filter) {
@@ -45,11 +61,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function fetchAndDisplayCategories() {
         fetch('http://localhost:5678/api/categories')
-            .then(function (response) { 
+            .then(function (response) {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                return response.json(); 
+                return response.json();
             })
             .then(function (categories) {
                 if (Array.isArray(categories) && categories.length > 0) {
@@ -76,6 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (Array.isArray(works) && works.length > 0) {
                     worksData = works;
                     updateGallery();
+                    updateGalleryModal();
                 } else {
                     console.error('Works data is invalid:', works);
                 }
@@ -97,6 +114,14 @@ document.addEventListener('DOMContentLoaded', function () {
             filteredWorks = worksData;
         }
         gallery.innerHTML = createGalleryHtml(filteredWorks);
+    }
+
+    function updateGalleryModal() {
+        if (!Array.isArray(worksData) || worksData.length === 0) {
+            console.error('No works data available');
+            return;
+        }
+        galleryModal.innerHTML = createGalleryModal(worksData);
     }
 
     function showModal() {

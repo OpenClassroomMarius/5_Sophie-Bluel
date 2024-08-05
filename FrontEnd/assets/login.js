@@ -39,7 +39,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             })
             .then(data => {
-                console.log('Success:', data);
                 setCookie('token', data.token, 1);
                 window.location.href = 'index.html';
             })

@@ -66,7 +66,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (listLogout) {
         listLogout.addEventListener('click', function () {
-            console.log('Logout');
             clearAllCookies();
             window.location.reload();
         });
@@ -109,10 +108,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const formData = new FormData(uploadForm);
 
-        console.log('Titre:', formData.get('title'));
-        console.log('Catégorie:', formData.get('category'));
-        console.log('Image:', formData.get('image'));
-
         fetch('http://localhost:5678/api/works', {
             method: 'POST',
             body: formData,
@@ -122,7 +117,6 @@ document.addEventListener('DOMContentLoaded', function () {
         })
             .then(response => response.json())
             .then(data => {
-                console.log('Success:', data);
                 updateGallery();
                 closeModal();
             })
@@ -184,7 +178,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (!response.ok) {
                     throw new Error('Failed to delete the work.');
                 }
-                console.log('Work deleted successfully:', work);
                 worksData = worksData.filter(w => w.id !== work.id);
                 updateGalleryModal();
                 updateGallery();
@@ -303,7 +296,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function closeModal() {
-        console.log('Close modal');
         if (modal) {
             modal.style.display = 'none';
         } else {

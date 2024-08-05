@@ -52,8 +52,10 @@
                     </div>
                 </div>
             </div>
-            <div class="filter-projects logout-appears" id="filter-projects">
-                <!-- Filters will appears here -->
+            <div class="logout-appears">
+                <div class="filter-projects" id="filter-projects">
+                    <!-- Filters will appears here -->
+                </div>
             </div>
             <div class="gallery" id="gallery">
                 <!-- Gallery pictures will appears here -->
@@ -85,14 +87,46 @@
     <!-- Modal -->
     <div class="modal" id="login-modal">
         <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2 class="modal-title">Galerie photo</h2>
-            <div class="gallery-modal" id="gallery-modal">
-                <!-- Gallery pictures will appears here -->
+            <span class="close-button" id="close-button">&times;</span>
+            <div class="modal-first-part" id="modal-first-part">
+                <h2 class="modal-title">Galerie photo</h2>
+                <div class="gallery-modal" id="gallery-modal">
+                    <!-- Gallery pictures will appears here -->
+                </div>
+                <div class="modal-separator"></div>
+                <div class="modal-button-container">
+                    <button class="modal-button" id="add-picture">Ajouter une photo</button>
+                </div>
             </div>
-            <div class="modal-separator"></div>
-            <div class="modal-button-container">
-                <button class="modal-button">Ajouter une photo</button>
+            <div class="modal-second-part" id="modal-second-part">
+                <i class="fa-solid fa-arrow-left fa-2x arrow-back" id="arrow-back-modal"></i>
+                <h1 class="modal-title">Ajout photo</h1>
+                <form id="upload-form" action="#" method="post" enctype="multipart/form-data">
+                    <div class="upload-form-container">
+                        <div class="form-group form-content">
+                            <i id="upload-icon" class="fa-regular fa-image fa-5x image-change-color"></i>
+                            <img id="uploaded-image-preview" src="" alt="Uploaded Image" class="uploaded-image" />
+                            <label for="image-upload" class="custom-file-upload">
+                                <span>+ Ajouter photo</span>
+                            </label>
+                            <input type="file" id="image-upload" name="image" accept="image/*" required>
+                            <p class="upload-small-text">jpg, png : 4mo max</p>
+                        </div>
+                    </div>
+                    <label for="title" class="form-label">Titre</label>
+                    <input type="text" id="title" name="title" class="form-input" required>
+                    <label for="category" class="form-label">Catégorie</label>
+                    <select id="category" name="category" class="form-input" required>
+                        <option value="1">Objets</option>
+                        <option value="2">Appartements</option>
+                        <option value="3">Hotels & restaurants</option>
+                    </select>
+                    <!-- <input type="number" id="category" name="category" class="form-input" required> -->
+                    <div class="modal-separator"></div>
+                    <div class="modal-button-container">
+                        <button type="submit" class="modal-button validate-color">Valider</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

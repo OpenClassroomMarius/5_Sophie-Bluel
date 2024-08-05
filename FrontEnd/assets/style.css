@@ -286,3 +286,18 @@ footer{
 .logout-appears {
 	display: none; /* Hide when class is added */
 }
+.validate-color{
+	background-color: #A7A7A7;
+}
+
+.uploaded-image{
+	max-width: 70px;
+	max-height: 70px;
+	display: none;
+}
+input{
+	font-family: 'Work Sans';
+}
+select{
+	font-family: 'Work Sans';
+}

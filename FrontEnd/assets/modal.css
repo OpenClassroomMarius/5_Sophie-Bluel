@@ -12,14 +12,21 @@
 }
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto;
+    margin: auto;
     padding: 20px;
     width: 420px;
-    height: 648px;
+    height: auto;
     padding-left: 105px;
+    padding-bottom: 50px;
     padding-right: 105px;
     border-radius: 10px;
     position: relative;
+}
+.modal-first-part{
+	display: block;
+}
+.modal-second-part{
+	display: none;
 }
 .close-button {
     color: #aaa;
@@ -50,6 +57,7 @@
     display: flex;
     justify-content: center;
     margin-top: 38px;
+    margin-bottom: ;
 }
 .modal-button{
     width: 237px;
@@ -60,6 +68,7 @@
     border: none;
     font-family: 'Syne', sans-serif;
     font-size: 14px;
+    cursor: pointer;
 }
 .modal-separator{
 	width: 100%;
@@ -69,7 +78,6 @@
 .gallery-modal{
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
     margin-top: 46px;
     gap: 7px;
     width: 100%;
@@ -101,4 +109,83 @@
 }
 .trash-color{
     color: white;
+}
+.upload-form-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 36px;
+    width: 420px;
+    height: 169px;
+    background-color: #E8F1F6;
+    border-radius: 3px;
+    margin-bottom: 30px;
+}
+.upload-small-text{
+    font-family: Work Sans;
+    font-size: 10px;
+    font-weight: 400;
+    text-align: center;
+    color: #444444;
+}
+
+.form-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.image-change-color{
+    color: #B9C5CC;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    width: 173px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #CBD6DC;
+    color: #306685;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 50px;
+    border: none;
+    margin-bottom: 7px;
+    margin-top: 12px;
+}
+.form-label {
+    font-family: 'Work Sans';
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 8px; /* Adjust spacing below the label */
+    display: block; /* Ensures label occupies full width */
+}
+.form-input {
+    width: 100%;
+    padding: 12px; /* Adjust padding for a comfortable input size */
+    font-size: 14px;
+    border: 1px solid #ccc; /* Light border for visibility */
+    border-radius: 4px; /* Smooth corners */
+    box-sizing: border-box; /* Ensures padding doesn't affect total width */
+    margin-bottom: 15px; /* Space below the input */
+    transition: border-color 0.3s; /* Smooth transition on focus */
+}
+.form-input:focus {
+    border-color: #1D6154; /* Change border color on focus for accessibility */
+    outline: none; /* Remove default outline */
+}
+.validate-color{
+    background-color: #A7A7A7;
+}
+.arrow-back{
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-left: 30px;
+    margin-top: 30px;
+    cursor: pointer;
 }

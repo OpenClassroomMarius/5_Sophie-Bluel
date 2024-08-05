@@ -1,6 +1,13 @@
+function setCookie(name, value, days) {
+    const date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    const expires = `expires=${date.toUTCString()}`;
+    document.cookie = `${name}=${value}; ${expires}; path=/`;
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     if (document.cookie.includes('token')) {
-        window.location.href = 'http://127.0.0.1:5500/OpenClassroom/5_Sophie-Bluel/FrontEnd/index.html';
+        window.location.href = 'index.html';
     }
     const form = document.getElementById('login-form');
     form.addEventListener('submit', function (event) {
@@ -33,8 +40,8 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .then(data => {
                 console.log('Success:', data);
-                document.cookie = `token=${data.token}`;
-                window.location.href = ' http://127.0.0.1:5500/OpenClassroom/5_Sophie-Bluel/FrontEnd/index.html';
+                setCookie('token', data.token, 1);
+                window.location.href = 'index.html';
             })
             .catch((error) => {
                 console.error('Error:', error);

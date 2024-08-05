@@ -5,11 +5,144 @@ document.addEventListener('DOMContentLoaded', function () {
     const modal = document.getElementById('login-modal');
     const listLogout = document.getElementById('logout-list');
     const modifyOpenModal = document.getElementById('modify-open-modal');
-    const closeButton = document.querySelector('.close-button');
+    const closeButton = document.getElementById('close-button');
+    const uploadForm = document.getElementById('upload-form');
+    const imageUploadInput = document.getElementById('image-upload');
+    const uploadIcon = document.getElementById('upload-icon');
+    const uploadedImagePreview = document.getElementById('uploaded-image-preview');
+    const arrowBackModal = document.getElementById('arrow-back-modal');
+    const modalFirstPart = document.getElementById('modal-first-part');
+    const modalSecondPart = document.getElementById('modal-second-part');
+    const addPicture = document.getElementById('add-picture');
 
     let worksData = [];
 
-    // Function to create filter HTML
+    imageUploadInput.addEventListener('change', function (event) {
+        const file = event.target.files[0];
+
+        if (file) {
+            if (file.size > 4 * 1024 * 1024) {
+                alert('The image size should not exceed 4MB. Please select a smaller file.');
+                imageUploadInput.value = '';
+                uploadIcon.style.display = 'block';
+                uploadedImagePreview.style.display = 'none';
+                uploadedImagePreview.src = '';
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                uploadIcon.style.display = 'none';
+                uploadedImagePreview.src = e.target.result;
+                uploadedImagePreview.style.display = 'block';
+            };
+
+            reader.readAsDataURL(file);
+        }
+    });
+
+    if (closeButton) {
+        closeButton.addEventListener('click', closeModal);
+    } else {
+        console.error('Close button not found');
+    }
+    function clearAllCookies() {
+        const cookies = document.cookie.split(";");
+
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          const eqPos = cookie.indexOf("=");
+          let name;
+
+          if (eqPos > -1) {
+            name = cookie.substring(0, eqPos);
+          } else {
+            name = cookie;
+          }
+          document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+        }
+      }
+
+    if (listLogout) {
+        listLogout.addEventListener('click', function () {
+            console.log('Logout');
+            clearAllCookies();
+            window.location.reload();
+        });
+    } else {
+        console.error('Logout list element not found');
+    }
+
+    if (arrowBackModal) {
+        arrowBackModal.addEventListener('click', function () {
+            modalFirstPart.style.display = 'block';
+            modalSecondPart.style.display = 'none';
+        });
+    } else {
+        console.error('Arrow back modal element not found');
+    }
+
+    if (modifyOpenModal) {
+        modifyOpenModal.addEventListener('click', showModal);
+    } else {
+        console.error('Modify open modal element not found');
+    }
+
+    if (addPicture) {
+        addPicture.addEventListener('click', function () {
+            modalFirstPart.style.display = 'none';
+            modalSecondPart.style.display = 'block';
+        });
+    } else {
+        console.error('Add picture element not found');
+    }
+
+    window.addEventListener('click', function (event) {
+        if (event.target == modal) {
+            closeModal();
+        }
+    });
+
+    uploadForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const formData = new FormData(uploadForm);
+
+        console.log('Titre:', formData.get('title'));
+        console.log('Catégorie:', formData.get('category'));
+        console.log('Image:', formData.get('image'));
+
+        fetch('http://localhost:5678/api/works', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Authorization': `Bearer ${getAuthToken()}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                updateGallery();
+                closeModal();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    });
+
+    if (filterProjects && gallery) {
+        fetchAndDisplayCategories();
+        fetchAndStoreWorks();
+    } else {
+        console.error('Essential elements not found');
+    }
+
+    function getAuthToken() {
+        const tokenCookie = document.cookie.split('; ').find(row => row.startsWith('token='));
+        return tokenCookie ? tokenCookie.split('=')[1] : null;
+    }
+
     function createFilterHtml(categories) {
         let filterHtml = '<div class="afilter afilterselected" data-category-id="all"><p class="filtertxt">Tous</p></div>';
         categories.forEach(function (category) {
@@ -18,7 +151,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return filterHtml;
     }
 
-    // Function to create gallery HTML
     function createGalleryHtml(works) {
         let galleryHtml = '';
         works.forEach(function (work) {
@@ -32,22 +164,60 @@ document.addEventListener('DOMContentLoaded', function () {
         return galleryHtml;
     }
 
+    function handleTrashClick(work, event) {
+        event.stopPropagation();
+
+        const token = getAuthToken();
+        if (!token) {
+            console.error('No authorization token found.');
+            return;
+        }
+
+        fetch(`http://localhost:5678/api/works/${work.id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to delete the work.');
+                }
+                console.log('Work deleted successfully:', work);
+                worksData = worksData.filter(w => w.id !== work.id);
+                updateGalleryModal();
+                updateGallery();
+            })
+            .catch(error => {
+                console.error('Error deleting work:', error);
+            });
+    }
+
     function createGalleryModal(works) {
-        let galleryModal = '';
-        works.forEach(function (work) {
-            galleryModal += `
+        let galleryModalHtml = '';
+        works.forEach(function (work, index) {
+            galleryModalHtml += `
                 <div class="modal-contain-image">
                     <img src="${work.imageUrl}" alt="${work.title}" class="modal-gallery-image">
-                    <div class="trashContainer">
+                    <div class="trashContainer" data-index="${index}">
                         <i class="fa-solid fa-trash-can trash-color"></i>
                     </div>
                 </div>
             `;
         });
-        return galleryModal;
+
+        galleryModal.innerHTML = galleryModalHtml;
+
+        const trashContainers = galleryModal.querySelectorAll('.trashContainer');
+        trashContainers.forEach(function (trashContainer) {
+            trashContainer.addEventListener('click', function (event) {
+                const index = this.getAttribute('data-index');
+                handleTrashClick(works[index], event);
+            });
+        });
     }
 
-    // Function to add event listeners to filters
     function addFilterEventListeners() {
         document.querySelectorAll('.afilter').forEach(function (filter) {
             filter.addEventListener('click', function () {
@@ -70,7 +240,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(function (categories) {
                 if (Array.isArray(categories) && categories.length > 0) {
                     filterProjects.innerHTML = createFilterHtml(categories);
-                    addFilterEventListeners();  // Add event listeners for filtering
+                    addFilterEventListeners();
                 } else {
                     console.error('Categories data is invalid:', categories);
                 }
@@ -121,61 +291,24 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('No works data available');
             return;
         }
-        galleryModal.innerHTML = createGalleryModal(worksData);
+        createGalleryModal(worksData);
     }
 
     function showModal() {
         if (modal) {
-            modal.style.display = 'block';
+            modal.style.display = 'flex';
         } else {
             console.error('Modal element not found');
         }
     }
 
     function closeModal() {
+        console.log('Close modal');
         if (modal) {
             modal.style.display = 'none';
         } else {
             console.error('Modal element not found');
         }
-    }
-
-    if (closeButton) {
-        closeButton.addEventListener('click', function () {
-            closeModal();
-        });
-    } else {
-        console.error('Close button not found');
-    }
-
-    if (listLogout) {
-        listLogout.addEventListener('click', function () {
-            document.cookie = "token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
-            window.location.reload();
-        });
-    } else {
-        console.error('Logout list element not found');
-    }
-
-    if (modifyOpenModal) {
-        modifyOpenModal.addEventListener('click', function () {
-            showModal();
-        });
-    } else {
-        console.error('Modify open modal element not found');
-    }
-
-    window.addEventListener('click', function (event) {
-        if (event.target == modal) {
-            closeModal();
-        }
-    });
-
-    if (filterProjects && gallery) {
-        fetchAndDisplayCategories();
-        fetchAndStoreWorks();
-    } else {
-        console.error('Essential elements not found');
     }
 
     function checkToken() {
@@ -187,7 +320,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             for (let i = 0; i < loggedInElements.length; i++) {
                 loggedInElements[i].style.display = 'block';
-            };
+            }
         } else {
             const loggedOutElements = document.getElementsByClassName('logout-appears');
             const loggedInElements = document.getElementsByClassName('login-appears');

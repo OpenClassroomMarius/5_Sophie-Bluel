@@ -249,7 +249,7 @@ footer{
 .header-banner {
     width: 100vw;
     height: 59px;
-    display: flex; /* Hide by default */
+    display: flex;
     background-color: #000000;
     color: white;
     position: absolute;
@@ -281,10 +281,10 @@ footer{
 	margin-left: 11px;
 }
 .login-appears {
-    display: flex; /* Display when class is added */
+    display: flex;
 }
 .logout-appears {
-	display: none; /* Hide when class is added */
+	display: none;
 }
 .validate-color{
 	background-color: #A7A7A7;

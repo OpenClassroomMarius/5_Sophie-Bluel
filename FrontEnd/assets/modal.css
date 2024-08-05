@@ -161,22 +161,22 @@ input[type="file"] {
     font-family: 'Work Sans';
     font-size: 14px;
     color: #333;
-    margin-bottom: 8px; /* Adjust spacing below the label */
-    display: block; /* Ensures label occupies full width */
+    margin-bottom: 8px;
+    display: block;
 }
 .form-input {
     width: 100%;
-    padding: 12px; /* Adjust padding for a comfortable input size */
+    padding: 12px;
     font-size: 14px;
-    border: 1px solid #ccc; /* Light border for visibility */
-    border-radius: 4px; /* Smooth corners */
-    box-sizing: border-box; /* Ensures padding doesn't affect total width */
-    margin-bottom: 15px; /* Space below the input */
-    transition: border-color 0.3s; /* Smooth transition on focus */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+    transition: border-color 0.3s;
 }
 .form-input:focus {
-    border-color: #1D6154; /* Change border color on focus for accessibility */
-    outline: none; /* Remove default outline */
+    border-color: #1D6154;
+    outline: none;
 }
 .validate-color{
     background-color: #A7A7A7;
